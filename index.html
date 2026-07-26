@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGÊNCIA</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  body {
+    background: #05070b;
+    color: white;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ==================== EFEITO MATRIX FUNDO ==================== */
+  #matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.25;
+  }
+
+  .control-input {
+    display: none;
+  }
+
+  /* ==================== LOGIN ==================== */
+  #login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    background: rgba(5, 15, 25, 0.92);
+    border: 2px solid #2aa9ff;
+    border-radius: 18px;
+    box-shadow: 0 0 25px #2aa9ff;
+    padding: 25px;
+    backdrop-filter: blur(8px);
+    z-index: 10;
+  }
+
+  .logo {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .logo img {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .foto-login-container {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .preview-foto-login {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 2px solid #2aa9ff;
+    object-fit: cover;
+    background: #0a1118;
+    margin-bottom: 8px;
+  }
+
+  .input-foto-label {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 13px;
+    background: #0a1118;
+    border: 1px solid #2aa9ff;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #2aa9ff;
+    transition: .3s;
+  }
+
+  .input-foto-label:hover {
+    background: #2aa9ff;
+    color: white;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    background: #0a1118;
+    border: 1px solid #2aa9ff;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+  }
+
+  input:focus, textarea:focus {
+    box-shadow: 0 0 15px #2aa9ff;
+  }
+
+  .btn-entrar {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    background: #2aa9ff;
+    color: white;
+    text-align: center;
+    transition: .3s;
+  }
+
+  .btn-entrar:hover {
+    box-shadow: 0 0 25px #2aa9ff;
+  }
+
+  #mensagem-erro {
+    margin-top: 15px;
+    text-align: center;
+    color: #ff4444;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  /* ==================== PAINEL ==================== */
+  #painel {
+    display: none;
+    width: 100vw;
+    min-height: 100vh;
+    position: relative;
+    z-index: 5;
+  }
+
+  #topo {
+    height: 75px;
+    background: rgba(8, 18, 27, 0.95);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 2px solid #2aa9ff;
+    backdrop-filter: blur(5px);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  #titulo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .logo-topo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px #2aa9ff);
+  }
+
+  #perfilTopo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #fotoPerfil {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #2aa9ff;
+    border: 2px solid white;
+    object-fit: cover;
+  }
+
+  #menu {
+    width: 230px;
+    min-height: calc(100vh - 75px);
+    background: rgba(9, 16, 24, 0.9);
+    float: left;
+    border-right: 2px solid #2aa9ff;
+    padding: 15px;
+    backdrop-filter: blur(5px);
+  }
+
+  .menu-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    background: #2aa9ff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    transition: .3s;
+    border: none;
+  }
+
+  .menu-btn:hover {
+    box-shadow: 0 0 15px #2aa9ff;
+  }
+
+  .btn-sair {
+    background: #ff4444;
+  }
+
+  .btn-sair:hover {
+    box-shadow: 0 0 15px #ff4444;
+  }
+
+  #conteudo {
+    margin-left: 230px;
+    min-height: calc(100vh - 75px);
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .card {
+    background: rgba(17, 26, 34, 0.9);
+    border: 1px solid #2aa9ff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(42,169,255,.25);
+    margin-bottom: 20px;
+    backdrop-filter: blur(5px);
+  }
+
+  .fechar {
+    display: inline-block;
+    float: right;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 50%;
+    background: red;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+  }
+
+  /* ==================== CHAT DE VOZ ==================== */
+  .container-barras-voz {
+    display: flex;
+    gap: 12px;
+    margin: 25px 0;
+    align-items: flex-end;
+    height: 80px;
+    padding: 10px;
+    background: #0a1118;
+    border-radius: 10px;
+    border: 1px solid #2aa9ff;
+  }
+
+  .barra-voz {
+    width: 12px;
+    height: 10px;
+    background: #2aa9ff;
+    border-radius: 5px;
+    transition: height 0.05s ease-in-out;
+  }
+
+  .btn-mutar {
+    background: #00ff66;
+    color: #000;
+  }
+
+  .btn-mutar.mutado {
+    background: #ff4444;
+    color: #fff;
+  }
+
+  /* ==================== ÁREA ESPIÃO ==================== */
+  .espiao-card {
+    background: rgba(0, 22, 15, 0.9);
+    border: 2px solid #00ff99;
+    border-radius: 15px;
+    padding: 20px;
+    color: #00ff99;
+    box-shadow: 0 0 20px #00ff99;
+    position: relative;
+    backdrop-filter: blur(5px);
+  }
+
+  .card-vitima {
+    background: rgba(0, 34, 23, 0.9);
+    border: 1px solid #00ff99;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .info-vitima-box {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .foto-vitima {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 2px solid #00ff99;
+    object-fit: cover;
+  }
+
+  .btn-excluir-alvo {
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+  }
+
+  .btn-excluir-alvo:hover {
+    box-shadow: 0 0 10px #ff4444;
+  }
+
+  /* ==================== NAVEGAÇÃO DE ABAS ==================== */
+  #toggle-login:checked ~ #login {
+    display: none;
+  }
+
+  #toggle-login:checked ~ #painel {
+    display: block;
+  }
+
+  .secao {
+    display: none;
+  }
+
+  #tab-inicio:checked ~ #painel #conteudo #sec-inicio,
+  #tab-chat:checked ~ #painel #conteudo #sec-chat,
+  #tab-voz:checked ~ #painel #conteudo #sec-voz,
+  #tab-restrita:checked ~ #painel #conteudo #sec-restrita,
+  #tab-perfil:checked ~ #painel #conteudo #sec-perfil,
+  #tab-config:checked ~ #painel #conteudo #sec-config,
+  #tab-espiao:checked ~ #painel #conteudo #sec-espiao,
+  #tab-alvos:checked ~ #painel #conteudo #sec-alvos {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Canvas da Animação Matrix -->
+  <canvas id="matrix-bg"></canvas>
+
+  <!-- Controles de Estado -->
+  <input type="checkbox" id="toggle-login" class="control-input">
+  
+  <input type="radio" name="tabs" id="tab-inicio" class="control-input" checked>
+  <input type="radio" name="tabs" id="tab-chat" class="control-input">
+  <input type="radio" name="tabs" id="tab-voz" class="control-input" onchange="iniciarAnaliseVoz()">
+  <input type="radio" name="tabs" id="tab-restrita" class="control-input">
+  <input type="radio" name="tabs" id="tab-perfil" class="control-input">
+  <input type="radio" name="tabs" id="tab-config" class="control-input">
+  <input type="radio" name="tabs" id="tab-espiao" class="control-input">
+  <input type="radio" name="tabs" id="tab-alvos" class="control-input">
+
+  <!-- Tela de Login -->
+  <div id="login">
+    <div class="logo">
+      <img src="age logo.jpeg" alt="Logo Agência">
+    </div>
+
+    <div class="foto-login-container">
+      <img id="preview-foto" class="preview-foto-login" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%232aa9ff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>" alt="Prévia Foto">
+      <br>
+      <label for="input-foto" class="input-foto-label">📷 Adicionar Foto</label>
+      <input type="file" id="input-foto" accept="image/*" style="display: none;" onchange="carregarFoto(event)">
+    </div>
+    
+    <form onsubmit="validarLogin(event)">
+      <input type="text" id="nome" placeholder="Nome" required>
+      <input type="password" id="senha" placeholder="Senha" required>
+      <button type="submit" class="btn-entrar">ENTRAR</button>
+    </form>
+    
+    <div id="mensagem-erro"></div>
+  </div>
+
+  <!-- Painel Principal -->
+  <div id="painel">
+    
+    <div id="topo">
+      <div id="titulo">
+        <img src="age logo.jpeg" alt="Logo Agência" class="logo-topo">
+      </div>
+      <div id="perfilTopo">
+        <img id="fotoPerfil" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23ffffff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>" alt="Foto Perfil Topo">
+        <span id="usuario-logado">Agente</span>
+      </div>
+    </div>
+
+    <div id="menu">
+      <label for="tab-inicio" class="menu-btn">🏠 Início</label>
+      <label for="tab-chat" class="menu-btn">💬 Chat Geral</label>
+      <label for="tab-voz" class="menu-btn" onclick="iniciarAnaliseVoz()">🎙 Chat de Voz</label>
+      <label for="tab-restrita" class="menu-btn">🔒 Área Restrita</label>
+      <label for="tab-perfil" class="menu-btn">👤 Perfil</label>
+      <label for="tab-config" class="menu-btn">⚙ Administração</label>
+      <label for="toggle-login" class="menu-btn btn-sair" onclick="deslogar()">🚪 Sair</label>
+    </div>
+
+    <div id="conteudo">
+
+      <!-- Seção: Início -->
+      <div id="sec-inicio" class="secao">
+        <div class="card">
+          <h2>🏠 Painel Principal</h2>
+          <p>Bem-vindo ao sistema da Agência.</p>
+          <p>Selecione uma opção no menu lateral para navegar.</p>
+        </div>
+      </div>
+
+      <!-- Seção: Chat Geral -->
+      <div id="sec-chat" class="secao">
+        <label for="tab-inicio" class="fechar">X</label>
+        <div class="card">
+          <h2>💬 Chat Geral</h2>
+          <div style="height:200px; overflow-y:auto; border:1px solid #2aa9ff; padding:10px; margin: 15px 0;">
+            <p><b>Sistema</b>: Bem-vindo ao Chat da Agência!</p>
+          </div>
+          <form action="#" method="get" onsubmit="return false;">
+            <input type="text" placeholder="Digite uma mensagem...">
+            <button type="reset" class="menu-btn" style="margin-top:10px;">Enviar</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Seção: Chat de Voz -->
+      <div id="sec-voz" class="secao">
+        <label for="tab-inicio" class="fechar">X</label>
+        <div class="card">
+          <h2>🎙 Chat de Voz</h2>
+          <p style="margin-top: 10px;">Captura de áudio em tempo real:</p>
+          
+          <div class="container-barras-voz">
+            <span style="align-self: center; font-size: 14px; color: #2aa9ff;">Microfone:</span>
+            <div class="barra-voz" id="b1"></div>
+            <div class="barra-voz" id="b2"></div>
+            <div class="barra-voz" id="b3"></div>
+            <div class="barra-voz" id="b4"></div>
+            <div class="barra-voz" id="b5"></div>
+            <div class="barra-voz" id="b6"></div>
+          </div>
+
+          <button type="button" id="btn-microfone" class="menu-btn btn-mutar" onclick="alternarMutar()">🎤 Microfone Ativo</button>
+        </div>
+      </div>
+
+      <!-- Seção: Área Restrita -->
+      <div id="sec-restrita" class="secao">
+        <label for="tab-inicio" class="fechar">X</label>
+        <div class="card">
+          <h2>🔒 Área Restrita</h2>
+          <p style="margin-bottom: 15px;">Acesso concedido.</p>
+          <label for="tab-espiao" class="menu-btn" style="background: #00ff99; color: #000;">🕵 Acessar Área Espião</label>
+        </div>
+      </div>
+
+      <!-- Seção: Perfil -->
+      <div id="sec-perfil" class="secao">
+        <label for="tab-inicio" class="fechar">X</label>
+        <div class="card">
+          <h2>👤 Meu Perfil</h2>
+          <div style="text-align: center; margin-bottom: 15px;">
+            <img id="foto-card-perfil" src="" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #2aa9ff; object-fit: cover;">
+          </div>
+          <p><b>Nome:</b> <span id="perfil-nome">Agente</span></p>
+          <p><b>Cargo:</b> Administrador</p>
+          <p><b>Nível de Acesso:</b> 1</p>
+          <p><b>Status:</b> <span style="color:#00ff66;">🟢 Online</span></p>
+        </div>
+      </div>
+
+      <!-- Seção: Administração -->
+      <div id="sec-config" class="secao">
+        <label for="tab-inicio" class="fechar">X</label>
+        <div class="card">
+          <h2>⚙ Administração</h2>
+          <p>Painel de gerenciamento do sistema.</p>
+          <br>
+          <h3>Usuários Aprovados:</h3>
+          <p>🟢 Agente Principal</p>
+        </div>
+      </div>
+
+      <!-- Seção: Formulário Área Espião -->
+      <div id="sec-espiao" class="secao">
+        <label for="tab-restrita" class="fechar">X</label>
+        <div class="espiao-card">
+          <h2>🕵 Área Espião</h2>
+
+          <form id="form-espiao" onsubmit="salvarRegistroEspiao(event)">
+            <input type="text" id="espiao-nome" placeholder="Nome do Alvo" required>
+            <input type="text" id="espiao-hora" placeholder="Horário">
+            <textarea id="espiao-desc" placeholder="O que está fazendo?"></textarea>
+            
+            <div style="margin-top: 10px;">
+              <label for="espiao-foto" class="input-foto-label" style="border-color:#00ff99; color:#00ff99;">📸 Selecionar Foto do Alvo</label>
+              <input type="file" id="espiao-foto" accept="image/*" style="display:none;" onchange="carregarFotoVitima(event)">
+              <span id="nome-foto-vitima" style="font-size: 12px; margin-left: 10px;"></span>
+            </div>
+
+            <button type="submit" class="menu-btn" style="background:#00ff99; color:black; margin-top:20px;">💾 Salvar Registro</button>
+          </form>
+
+          <label for="tab-alvos" class="menu-btn" style="background: transparent; border: 2px solid #00ff99; color: #00ff99; margin-top: 10px;" onclick="carregarVitimas()">👁 Ver Alvos</label>
+        </div>
+      </div>
+
+      <!-- Seção: Página dos Alvos Registrados com exclusão individual precisa -->
+      <div id="sec-alvos" class="secao">
+        <label for="tab-espiao" class="fechar">X</label>
+        <div class="espiao-card">
+          <h2>🎯 Alvos Registrados</h2>
+          <p style="font-size: 13px; color: #00ff99; margin-top: 5px;">Lista dos registros armazenados:</p>
+
+          <div id="lista-vitimas">
+            <!-- Registros aparecem aqui -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    /* ================= ANIMAÇÃO MATRIX 0 E 1 ================= */
+    const canvas = document.getElementById('matrix-bg');
+    const ctx = canvas.getContext('2d');
+
+    function redimensionarCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    redimensionarCanvas();
+    window.addEventListener('resize', redimensionarCanvas);
+
+    const digitos = '01';
+    const tamanhoFonte = 16;
+    let colunas = Math.floor(canvas.width / tamanhoFonte);
+    let gotas = Array(colunas).fill(1);
+
+    function desenharMatrix() {
+      ctx.fillStyle = 'rgba(5, 7, 11, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#2aa9ff';
+      ctx.font = tamanhoFonte + 'px monospace';
+
+      for (let i = 0; i < gotas.length; i++) {
+        const texto = digitos.charAt(Math.floor(Math.random() * digitos.length));
+        ctx.fillText(texto, i * tamanhoFonte, gotas[i] * tamanhoFonte);
+
+        if (gotas[i] * tamanhoFonte > canvas.height && Math.random() > 0.975) {
+          gotas[i] = 0;
+        }
+        gotas[i]++;
+      }
+    }
+    setInterval(desenharMatrix, 40);
+
+    /* ================= LOGIN E FUNCIONALIDADES ================= */
+    const SENHA_CORRETA = "123456";
+    let fotoCarregada = "";
+    let fotoVitimaTemp = "";
+
+    let audioContext, analyser, microphone, javascriptNode;
+    let estaMutado = false;
+    let analiseIniciada = false;
+
+    function carregarFoto(event) {
+      const arquivo = event.target.files[0];
+      if (arquivo) {
+        const leitor = new FileReader();
+        leitor.onload = function(e) {
+          fotoCarregada = e.target.result;
+          document.getElementById("preview-foto").src = fotoCarregada;
+        };
+        leitor.readAsDataURL(arquivo);
+      }
+    }
+
+    function carregarFotoVitima(event) {
+      const arquivo = event.target.files[0];
+      if (arquivo) {
+        document.getElementById("nome-foto-vitima").innerText = arquivo.name;
+        const leitor = new FileReader();
+        leitor.onload = function(e) {
+          fotoVitimaTemp = e.target.result;
+        };
+        leitor.readAsDataURL(arquivo);
+      }
+    }
+
+    function validarLogin(event) {
+      event.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const senha = document.getElementById("senha").value;
+      const msgErro = document.getElementById("mensagem-erro");
+
+      msgErro.innerHTML = "";
+
+      if (nome === "") {
+        msgErro.innerHTML = "Por favor, digite seu nome.";
+        return;
+      }
+
+      if (nome.toLowerCase() === "joão francisco" || nome.toLowerCase() === "joao francisco") {
+        msgErro.innerHTML = "Nome recusado.";
+        return;
+      }
+
+      if (senha !== SENHA_CORRETA) {
+        msgErro.innerHTML = "Senha incorreta.";
+        return;
+      }
+
+      document.getElementById("usuario-logado").innerText = nome;
+      document.getElementById("perfil-nome").innerText = nome;
+
+      const fotoPadrao = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%232aa9ff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+      document.getElementById("fotoPerfil").src = fotoCarregada || fotoPadrao;
+      document.getElementById("foto-card-perfil").src = fotoCarregada || fotoPadrao;
+
+      document.getElementById("toggle-login").checked = true;
+    }
+
+    function deslogar() {
+      document.getElementById("nome").value = "";
+      document.getElementById("senha").value = "";
+      document.getElementById("mensagem-erro").innerHTML = "";
+    }
+
+    /* ================= SALVAR, EXIBIR E EXCLUIR ALVOS ================= */
+    function salvarRegistroEspiao(event) {
+      event.preventDefault();
+
+      const nome = document.getElementById("espiao-nome").value.trim();
+      const hora = document.getElementById("espiao-hora").value.trim();
+      const desc = document.getElementById("espiao-desc").value.trim();
+
+      if (nome === "") return;
+
+      const fotoFinal = fotoVitimaTemp || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%2300ff99'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+
+      // id gerado com número único e string aleatória
+      const novoAlvo = {
+        id: Date.now() + "_" + Math.random().toString(36).substr(2, 9),
+        nome: nome,
+        hora: hora || new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
+        desc: desc || "Sem descrição",
+        foto: fotoFinal
+      };
+
+      let alvos = JSON.parse(localStorage.getItem("vitimas_agencia") || "[]");
+      alvos.unshift(novoAlvo);
+      localStorage.setItem("vitimas_agencia", JSON.stringify(alvos));
+
+      document.getElementById("espiao-nome").value = "";
+      document.getElementById("espiao-hora").value = "";
+      document.getElementById("espiao-desc").value = "";
+      document.getElementById("espiao-foto").value = "";
+      document.getElementById("nome-foto-vitima").innerText = "";
+      fotoVitimaTemp = "";
+
+      alert("Registro do alvo salvo com sucesso!");
+    }
+
+    function carregarVitimas() {
+      const container = document.getElementById("lista-vitimas");
+      let alvos = JSON.parse(localStorage.getItem("vitimas_agencia") || "[]");
+
+      if (alvos.length === 0) {
+        container.innerHTML = "<p style='color: #a0a0a0; margin-top: 15px;'>Nenhum alvo registrado ainda.</p>";
+        return;
+      }
+
+      let html = "";
+      alvos.forEach(a => {
+        html += `
+          <div class="card-vitima">
+            <div class="info-vitima-box">
+              <img src="${a.foto}" class="foto-vitima" alt="Foto Alvo">
+              <div>
+                <h3 style="color: #00ff99;">${a.nome}</h3>
+                <p style="font-size: 13px; color: #00cc77;"><b>Horário:</b> ${a.hora}</p>
+                <p style="font-size: 14px; margin-top: 5px;">${a.desc}</p>
+              </div>
+            </div>
+            <button class="btn-excluir-alvo" onclick="excluirAlvo('${a.id}')">🗑 Excluir</button>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Exclusão cirúrgica apenas do id exato clicado
+    function excluirAlvo(idAlvo) {
+      let alvos = JSON.parse(localStorage.getItem("vitimas_agencia") || "[]");
+      alvos = alvos.filter(a => String(a.id) !== String(idAlvo));
+      localStorage.setItem("vitimas_agencia", JSON.stringify(alvos));
+      carregarVitimas();
+    }
+
+    /* ================= CHAT DE VOZ ================= */
+    function iniciarAnaliseVoz() {
+      if (analiseIniciada) return;
+
+      navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        .then(function(stream) {
+          analiseIniciada = true;
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          analyser = audioContext.createAnalyser();
+          microphone = audioContext.createMediaStreamSource(stream);
+          javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+
+          analyser.smoothingTimeConstant = 0.5;
+          analyser.fftSize = 64;
+
+          microphone.connect(analyser);
+          analyser.connect(javascriptNode);
+          javascriptNode.connect(audioContext.destination);
+
+          javascriptNode.onaudioprocess = function() {
+            if (estaMutado) {
+              zerarBarras();
+              return;
+            }
+
+            const array = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(array);
+
+            let valores = 0;
+            for (let i = 0; i < array.length; i++) {
+              valores += array[i];
+            }
+            const mediaVolume = valores / array.length;
+
+            for (let i = 1; i <= 6; i++) {
+              const barra = document.getElementById("b" + i);
+              if (barra) {
+                let altura = Math.min(mediaVolume * (0.8 + (i * 0.2)), 70);
+                barra.style.height = Math.max(altura, 8) + "px";
+              }
+            }
+          };
+        })
+        .catch(function(err) {
+          console.log("Erro no microfone:", err);
+        });
+    }
+
+    function zerarBarras() {
+      for (let i = 1; i <= 6; i++) {
+        const barra = document.getElementById("b" + i);
+        if (barra) barra.style.height = "8px";
+      }
+    }
+
+    function alternarMutar() {
+      estaMutado = !estaMutado;
+      const btn = document.getElementById("btn-microfone");
+
+      if (estaMutado) {
+        btn.innerText = "🔴 Microfone Mutado";
+        btn.classList.add("mutado");
+        zerarBarras();
+      } else {
+        btn.innerText = "🎤 Microfone Ativo";
+        btn.classList.remove("mutado");
+      }
+    }
+  </script>
+
+</body>
+</html>
