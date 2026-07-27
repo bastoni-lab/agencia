@@ -42,8 +42,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 380px;
-    background: rgba(5, 15, 25, 0.92);
+    width: 440px;
+    max-width: 95vw;
+    background: rgba(5, 15, 25, 0.95);
     border: 2px solid #2aa9ff;
     border-radius: 18px;
     box-shadow: 0 0 25px #2aa9ff;
@@ -58,54 +59,68 @@
     margin-bottom: 20px;
   }
 
-  .logo img {
-    width: 100%;
-    max-width: 280px;
-    height: auto;
-    border-radius: 8px;
-  }
-
-  .foto-login-container {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-
-  .preview-foto-login {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: 2px solid #2aa9ff;
-    object-fit: cover;
-    background: #0a1118;
-    margin-bottom: 8px;
-  }
-
-  .input-foto-label {
-    display: inline-block;
-    padding: 6px 12px;
-    font-size: 13px;
-    background: #0a1118;
-    border: 1px solid #2aa9ff;
-    border-radius: 8px;
-    cursor: pointer;
+  .logo-texto {
+    font-size: 32px;
+    font-weight: 900;
     color: #2aa9ff;
-    transition: .3s;
+    text-shadow: 0 0 15px #2aa9ff, 0 0 25px #2aa9ff;
+    letter-spacing: 2px;
   }
 
-  .input-foto-label:hover {
-    background: #2aa9ff;
-    color: white;
+  /* Galeria de Fotos */
+  .secao-avatar-titulo {
+    font-size: 14px;
+    color: #2aa9ff;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .galeria-avatares {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 8px;
+    background: rgba(10, 17, 24, 0.8);
+    border-radius: 10px;
+    border: 1px solid rgba(42, 169, 255, 0.3);
+  }
+
+  .avatar-opcao {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .avatar-opcao:hover, .avatar-opcao.selecionado {
+    border-color: #2aa9ff;
+    box-shadow: 0 0 12px #2aa9ff;
+    transform: scale(1.08);
+  }
+
+  .avatar-opcao-espiao:hover, .avatar-opcao-espiao.selecionado {
+    border-color: #00ff99 !important;
+    box-shadow: 0 0 12px #00ff99 !important;
   }
 
   input, textarea {
     width: 100%;
-    padding: 14px;
-    margin-top: 12px;
+    padding: 12px;
+    margin-top: 10px;
     background: #0a1118;
     border: 1px solid #2aa9ff;
     border-radius: 10px;
     color: white;
-    font-size: 15px;
+    font-size: 14px;
     outline: none;
   }
 
@@ -134,7 +149,7 @@
   }
 
   #mensagem-erro {
-    margin-top: 15px;
+    margin-top: 12px;
     text-align: center;
     color: #ff4444;
     font-weight: bold;
@@ -170,11 +185,12 @@
     height: 100%;
   }
 
-  .logo-topo {
-    height: 50px;
-    width: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 0 8px #2aa9ff);
+  .logo-topo-texto {
+    font-size: 24px;
+    font-weight: 900;
+    color: #2aa9ff;
+    text-shadow: 0 0 10px #2aa9ff;
+    letter-spacing: 2px;
   }
 
   #perfilTopo {
@@ -186,10 +202,11 @@
   #fotoPerfil {
     width: 45px;
     height: 45px;
-    border-radius: 50%;
+    border-radius: 10px;
     background: #2aa9ff;
     border: 2px solid white;
     object-fit: cover;
+    object-position: center;
   }
 
   #menu {
@@ -328,9 +345,10 @@
   .foto-vitima {
     width: 75px;
     height: 75px;
-    border-radius: 50%;
+    border-radius: 10px;
     border: 2px solid #00ff99;
     object-fit: cover;
+    object-position: center;
   }
 
   .btn-excluir-alvo {
@@ -393,19 +411,24 @@
   <!-- Tela de Login -->
   <div id="login">
     <div class="logo">
-      <img src="age logo.jpeg" alt="Logo Agência">
+      <h1 class="logo-texto">AGÊNCIA</h1>
     </div>
 
-    <div class="foto-login-container">
-      <img id="preview-foto" class="preview-foto-login" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%232aa9ff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>" alt="Prévia Foto">
-      <br>
-      <label for="input-foto" class="input-foto-label">📷 Adicionar Foto</label>
-      <input type="file" id="input-foto" accept="image/*" style="display: none;" onchange="carregarFoto(event)">
-    </div>
-    
     <form onsubmit="validarLogin(event)">
-      <input type="text" id="nome" placeholder="Nome" required>
-      <input type="password" id="senha" placeholder="Senha" required>
+      <input type="text" id="nome" placeholder="Seu Nome" required>
+      <input type="password" id="senha" placeholder="Sua Senha" required>
+
+      <p class="secao-avatar-titulo">Escolha sua foto de perfil:</p>
+      <div class="galeria-avatares" id="galeria-login">
+        <img src="ag01_2.jpeg" class="avatar-opcao selecionado" onerror="tratarErroImagem(this, 'laranja')" onclick="selecionarPerfilAvatar(this)">
+        <img src="ag02_2.jpeg" class="avatar-opcao" onerror="tratarErroImagem(this, 'verde')" onclick="selecionarPerfilAvatar(this)">
+        <img src="ag03_2.jpeg" class="avatar-opcao" onerror="tratarErroImagem(this, 'vermelho')" onclick="selecionarPerfilAvatar(this)">
+        <img src="ag04_2.jpeg" class="avatar-opcao" onerror="tratarErroImagem(this, 'rosa')" onclick="selecionarPerfilAvatar(this)">
+        <img src="ag05_2.jpeg" class="avatar-opcao" onerror="tratarErroImagem(this, 'matrix')" onclick="selecionarPerfilAvatar(this)">
+        <img src="ag06_2.jpeg" class="avatar-opcao" onerror="tratarErroImagem(this, 'azul')" onclick="selecionarPerfilAvatar(this)">
+        <img src="ag08_2.jpeg" class="avatar-opcao" onerror="tratarErroImagem(this, 'purple')" onclick="selecionarPerfilAvatar(this)">
+      </div>
+
       <button type="submit" class="btn-entrar">ENTRAR</button>
     </form>
     
@@ -417,10 +440,10 @@
     
     <div id="topo">
       <div id="titulo">
-        <img src="age logo.jpeg" alt="Logo Agência" class="logo-topo">
+        <span class="logo-topo-texto">AGÊNCIA</span>
       </div>
       <div id="perfilTopo">
-        <img id="fotoPerfil" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23ffffff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>" alt="Foto Perfil Topo">
+        <img id="fotoPerfil" src="ag01_2.jpeg" onerror="tratarErroImagem(this, 'laranja')" alt="Foto Perfil Topo">
         <span id="usuario-logado">Agente</span>
       </div>
     </div>
@@ -498,7 +521,7 @@
         <div class="card">
           <h2>👤 Meu Perfil</h2>
           <div style="text-align: center; margin-bottom: 15px;">
-            <img id="foto-card-perfil" src="" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #2aa9ff; object-fit: cover;">
+            <img id="foto-card-perfil" src="ag01_2.jpeg" onerror="tratarErroImagem(this, 'laranja')" style="width: 100px; height: 100px; border-radius: 15px; border: 2px solid #2aa9ff; object-fit: cover; object-position: center;">
           </div>
           <p><b>Nome:</b> <span id="perfil-nome">Agente</span></p>
           <p><b>Cargo:</b> Administrador</p>
@@ -530,10 +553,18 @@
             <input type="text" id="espiao-hora" placeholder="Horário">
             <textarea id="espiao-desc" placeholder="O que está fazendo?"></textarea>
             
-            <div style="margin-top: 10px;">
-              <label for="espiao-foto" class="input-foto-label" style="border-color:#00ff99; color:#00ff99;">📸 Selecionar Foto do Alvo</label>
-              <input type="file" id="espiao-foto" accept="image/*" style="display:none;" onchange="carregarFotoVitima(event)">
-              <span id="nome-foto-vitima" style="font-size: 12px; margin-left: 10px;"></span>
+            <div style="margin-top: 15px;">
+              <p style="font-size: 14px; font-weight: bold; color: #00ff99;">Escolha a Imagem do Alvo:</p>
+              
+              <div class="galeria-avatares" id="galeria-espiao">
+                <img src="ag01_2.jpeg" class="avatar-opcao avatar-opcao-espiao selecionado" onerror="tratarErroImagem(this, 'laranja')" onclick="selecionarEspiaoAvatar(this)">
+                <img src="ag02_2.jpeg" class="avatar-opcao avatar-opcao-espiao" onerror="tratarErroImagem(this, 'verde')" onclick="selecionarEspiaoAvatar(this)">
+                <img src="ag03_2.jpeg" class="avatar-opcao avatar-opcao-espiao" onerror="tratarErroImagem(this, 'vermelho')" onclick="selecionarEspiaoAvatar(this)">
+                <img src="ag04_2.jpeg" class="avatar-opcao avatar-opcao-espiao" onerror="tratarErroImagem(this, 'rosa')" onclick="selecionarEspiaoAvatar(this)">
+                <img src="ag05_2.jpeg" class="avatar-opcao avatar-opcao-espiao" onerror="tratarErroImagem(this, 'matrix')" onclick="selecionarEspiaoAvatar(this)">
+                <img src="ag06_2.jpeg" class="avatar-opcao avatar-opcao-espiao" onerror="tratarErroImagem(this, 'azul')" onclick="selecionarEspiaoAvatar(this)">
+                <img src="ag08_2.jpeg" class="avatar-opcao avatar-opcao-espiao" onerror="tratarErroImagem(this, 'purple')" onclick="selecionarEspiaoAvatar(this)">
+              </div>
             </div>
 
             <button type="submit" class="menu-btn" style="background:#00ff99; color:black; margin-top:20px;">💾 Salvar Registro</button>
@@ -543,7 +574,7 @@
         </div>
       </div>
 
-      <!-- Seção: Página dos Alvos Registrados com exclusão individual precisa -->
+      <!-- Seção: Página dos Alvos Registrados -->
       <div id="sec-alvos" class="secao">
         <label for="tab-espiao" class="fechar">X</label>
         <div class="espiao-card">
@@ -551,7 +582,7 @@
           <p style="font-size: 13px; color: #00ff99; margin-top: 5px;">Lista dos registros armazenados:</p>
 
           <div id="lista-vitimas">
-            <!-- Registros aparecem aqui -->
+            <!-- Registros inseridos aqui -->
           </div>
         </div>
       </div>
@@ -561,6 +592,34 @@
   </div>
 
   <script>
+    /* ================= CORREÇÃO AUTOMÁTICA DE EXTENSÃO E FALLBACK ================= */
+    const FALLBACKS_SVG = {
+      laranja: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%231a0e00"/><rect x="5" y="5" width="90" height="90" fill="none" stroke="%23ff9900" stroke-width="4" rx="10"/><text x="50" y="45" fill="%23ff9900" font-size="12" font-weight="bold" font-family="Arial" text-anchor="middle">AGÊNCIA</text><path d="M50 55 L65 78 L35 78 Z" fill="%23ff9900"/></svg>',
+      verde: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%2300180f"/><rect x="5" y="5" width="90" height="90" fill="none" stroke="%2300ff99" stroke-width="4" rx="10"/><text x="50" y="45" fill="%2300ff99" font-size="12" font-weight="bold" font-family="Arial" text-anchor="middle">AGÊNCIA</text><path d="M50 55 L65 78 L35 78 Z" fill="%2300ff99"/></svg>',
+      vermelho: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%231c0505"/><rect x="5" y="5" width="90" height="90" fill="none" stroke="%23ff4444" stroke-width="4" rx="10"/><text x="50" y="45" fill="%23ff4444" font-size="12" font-weight="bold" font-family="Arial" text-anchor="middle">AGÊNCIA</text><path d="M50 55 L65 78 L35 78 Z" fill="%23ff4444"/></svg>',
+      rosa: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%231c0013"/><rect x="5" y="5" width="90" height="90" fill="none" stroke="%23ff00aa" stroke-width="4" rx="10"/><text x="50" y="45" fill="%23ff00aa" font-size="12" font-weight="bold" font-family="Arial" text-anchor="middle">AGÊNCIA</text><path d="M50 55 L65 78 L35 78 Z" fill="%23ff00aa"/></svg>',
+      matrix: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%2300180f"/><rect x="5" y="5" width="90" height="90" fill="none" stroke="%2300cc66" stroke-width="4" rx="10"/><text x="50" y="45" fill="%2300cc66" font-size="12" font-weight="bold" font-family="Arial" text-anchor="middle">AGÊNCIA</text><path d="M50 55 L65 78 L35 78 Z" fill="%2300cc66"/></svg>',
+      azul: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%23050f19"/><rect x="5" y="5" width="90" height="90" fill="none" stroke="%232aa9ff" stroke-width="4" rx="10"/><text x="50" y="45" fill="%232aa9ff" font-size="12" font-weight="bold" font-family="Arial" text-anchor="middle">AGÊNCIA</text><path d="M50 55 L65 78 L35 78 Z" fill="%232aa9ff"/></svg>',
+      purple: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%2318001c"/><rect x="5" y="5" width="90" height="90" fill="none" stroke="%23bb00ff" stroke-width="4" rx="10"/><text x="50" y="45" fill="%23bb00ff" font-size="12" font-weight="bold" font-family="Arial" text-anchor="middle">AGÊNCIA</text><path d="M50 55 L65 78 L35 78 Z" fill="%23bb00ff"/></svg>'
+    };
+
+    function tratarErroImagem(img, corKey) {
+      if (!img.dataset.tentou) {
+        img.dataset.tentou = "1";
+        // Tenta alternar entre .jpg e .jpeg
+        if (img.src.endsWith(".jpeg")) {
+          img.src = img.src.replace(".jpeg", ".jpg");
+        } else if (img.src.endsWith(".jpg")) {
+          img.src = img.src.replace(".jpg", ".jpeg");
+        } else {
+          img.src = FALLBACKS_SVG[corKey] || FALLBACKS_SVG.azul;
+        }
+      } else {
+        // Se ambos falharem no computador, aplica o avatar SVG perfeito sem erro
+        img.src = FALLBACKS_SVG[corKey] || FALLBACKS_SVG.azul;
+      }
+    }
+
     /* ================= ANIMAÇÃO MATRIX 0 E 1 ================= */
     const canvas = document.getElementById('matrix-bg');
     const ctx = canvas.getContext('2d');
@@ -596,37 +655,21 @@
     }
     setInterval(desenharMatrix, 40);
 
-    /* ================= LOGIN E FUNCIONALIDADES ================= */
+    /* ================= LOGIN E SELEÇÃO ================= */
     const SENHA_CORRETA = "123456";
-    let fotoCarregada = "";
-    let fotoVitimaTemp = "";
+    let fotoPerfilSelecionada = "ag01_2.jpeg";
+    let fotoEspiaoSelecionada = "ag01_2.jpeg";
 
-    let audioContext, analyser, microphone, javascriptNode;
-    let estaMutado = false;
-    let analiseIniciada = false;
-
-    function carregarFoto(event) {
-      const arquivo = event.target.files[0];
-      if (arquivo) {
-        const leitor = new FileReader();
-        leitor.onload = function(e) {
-          fotoCarregada = e.target.result;
-          document.getElementById("preview-foto").src = fotoCarregada;
-        };
-        leitor.readAsDataURL(arquivo);
-      }
+    function selecionarPerfilAvatar(elemento) {
+      document.querySelectorAll("#galeria-login .avatar-opcao").forEach(img => img.classList.remove("selecionado"));
+      elemento.classList.add("selecionado");
+      fotoPerfilSelecionada = elemento.src;
     }
 
-    function carregarFotoVitima(event) {
-      const arquivo = event.target.files[0];
-      if (arquivo) {
-        document.getElementById("nome-foto-vitima").innerText = arquivo.name;
-        const leitor = new FileReader();
-        leitor.onload = function(e) {
-          fotoVitimaTemp = e.target.result;
-        };
-        leitor.readAsDataURL(arquivo);
-      }
+    function selecionarEspiaoAvatar(elemento) {
+      document.querySelectorAll("#galeria-espiao .avatar-opcao").forEach(img => img.classList.remove("selecionado"));
+      elemento.classList.add("selecionado");
+      fotoEspiaoSelecionada = elemento.src;
     }
 
     function validarLogin(event) {
@@ -656,9 +699,8 @@
       document.getElementById("usuario-logado").innerText = nome;
       document.getElementById("perfil-nome").innerText = nome;
 
-      const fotoPadrao = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%232aa9ff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
-      document.getElementById("fotoPerfil").src = fotoCarregada || fotoPadrao;
-      document.getElementById("foto-card-perfil").src = fotoCarregada || fotoPadrao;
+      document.getElementById("fotoPerfil").src = fotoPerfilSelecionada;
+      document.getElementById("foto-card-perfil").src = fotoPerfilSelecionada;
 
       document.getElementById("toggle-login").checked = true;
     }
@@ -679,15 +721,12 @@
 
       if (nome === "") return;
 
-      const fotoFinal = fotoVitimaTemp || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%2300ff99'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
-
-      // id gerado com número único e string aleatória
       const novoAlvo = {
         id: Date.now() + "_" + Math.random().toString(36).substr(2, 9),
         nome: nome,
         hora: hora || new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
         desc: desc || "Sem descrição",
-        foto: fotoFinal
+        foto: fotoEspiaoSelecionada
       };
 
       let alvos = JSON.parse(localStorage.getItem("vitimas_agencia") || "[]");
@@ -697,9 +736,6 @@
       document.getElementById("espiao-nome").value = "";
       document.getElementById("espiao-hora").value = "";
       document.getElementById("espiao-desc").value = "";
-      document.getElementById("espiao-foto").value = "";
-      document.getElementById("nome-foto-vitima").innerText = "";
-      fotoVitimaTemp = "";
 
       alert("Registro do alvo salvo com sucesso!");
     }
@@ -733,7 +769,6 @@
       container.innerHTML = html;
     }
 
-    // Exclusão cirúrgica apenas do id exato clicado
     function excluirAlvo(idAlvo) {
       let alvos = JSON.parse(localStorage.getItem("vitimas_agencia") || "[]");
       alvos = alvos.filter(a => String(a.id) !== String(idAlvo));
@@ -742,6 +777,10 @@
     }
 
     /* ================= CHAT DE VOZ ================= */
+    let audioContext, analyser, microphone, javascriptNode;
+    let estaMutado = false;
+    let analiseIniciada = false;
+
     function iniciarAnaliseVoz() {
       if (analiseIniciada) return;
 
